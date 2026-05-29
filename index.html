@@ -39,54 +39,68 @@
             <img class="principal__cabecalho--imagemGuara" src="img/img-guara.png" alt="imagem-guara">
             <h1 class="principal__cabecalho--nomeProjeto">Projeto Guará</h1>
         </header>
-        <!-- chat Direção -->
-        <div class="principal__chatDirecao">
-            <h1 class="principal__chatDirecao--titulo">Chat Direção</h1>
-            <p class="principal__chatDirecao--paragrafo">Chat direcionado a coordenação, diretoria e profissionais da escola no geral.</p>
-            <span class="principal__chatDirecao--usersOn"><i></i>5.678 Online</span>
-            <span class="principal__chatDirecao--members"><i></i>345.678 Members</span>
-        </div>
-        <!-- agenda -->
-        <div class="principal__agenda">
-            <h1 class="principal__agenda--titulo">Agenda</h1>
-            <p class="principal__agenda--paragrafo">Aqui ficarão os avisos e atividades com notificação de prioridade máxima.</p>
-            <span class="principal__agenda--atividadesConcluidas"><i></i>xxxx concluídas</span>
-            <span class="principal__agenda--atividadesEmEspera"><i></i>xxxx em espera</span>
-        </div>
-        <!-- chat Turma -->
-        <div class="principal__chatTurma">
-            <h1 class="principal__chatTurma--titulo">Chat Turma xxx</h1>
-            <p class="principal__chatTurma--paragrafo">Chat usado apenas para a turma</p>
-            <span class="principal__chatTurma--members"><i></i>42 Members</span>
-        </div>
-        <!-- chat Amigável -->
-        <div class="principal__chatAmigavel">
-            <h1 class="principal__chatAmigavel--titulo">Chat amigável</h1>
-            <p class="principal__chatAmigavel--paragrafo">Chat utilizado para se comunicar com amigos</p>
-            <span class="principal__chatAmigavel--members"><i></i>20 members</span>
-        </div>
+        <!-- Sessão superior -->
+        <section class="principal__superior">
+            <!-- chat Direção -->
+            <div class="principal__superior--chatDirecao">
+                <h1 class="superior__chatDirecao--Titulo">Chat Direção</h1>
+                <p class="superior__chatDirecao--paragrafo">Chat direcionado a coordenação, diretoria e profissionais
+                    da
+                    escola no geral.</p>
+                <span class="superior__chatDirecao--usersOn"><i></i>5.678 Online</span>
+                <span class="superior__chatDirecao--members"><i></i>345.678 Members</span>
+            </div>
+            <!-- agenda -->
+            <div class="principal__superior--agenda">
+                <h1 class="superior__agenda--titulo">Agenda</h1>
+                <p class="superior__agenda--paragrafo">Aqui ficarão os avisos e atividades com notificação de
+                    prioridade
+                    máxima.</p>
+                <span class="superior__agenda--atividadesConcluidas"><i></i>xxxx concluídas</span>
+                <span class="superior__agenda--atividadesEmEspera"><i></i>xxxx em espera</span>
+            </div>
+        </section>
+        <!-- Sessão inferior -->
+        <section class="principal__inferior">
+            <!-- chat Turma -->
+            <div class="principal__inferior--chatTurma">
+                <h1 class="inferior__chatTurma--titulo">Chat Turma xxx</h1>
+                <p class="inferior__chatTurma--paragrafo">Chat usado apenas para a turma</p>
+                <span class="inferior__chatTurma--members"><i></i>42 Members</span>
+            </div>
+            <!-- chat Amigável -->
+            <div class="principal__inferior--chatAmigavel">
+                <h1 class="inferior__chatAmigavel--titulo">Chat amigável</h1>
+                <p class="inferior__chatAmigavel--paragrafo">Chat utilizado para se comunicar com amigos</p>
+                <span class="inferior__chatAmigavel--members"><i></i>20 members</span>
+            </div>
+        </section>
     </main>
 
-    <section>
-        <nav>
-            <ul>
-                <li><a href="#"><i class="bx bx-bell"></i></a></li>
-                <li><a href="#"><i class="bx bx-message"></i></a></li>
-                <li><a href="#"><i class="bx bx-cog"></i></a></li>
+    <!-- Aba configurações do user -->
+    <section class="configuracoes">
+        <nav class="configuracoes__menuNav">
+            <ul class="configuracoes__menuNav--list">
+                <li class="menuNav__list--item"><a href="#"><i class="bx bx-bell"></i></a></li>
+                <li class="menuNav__list--item"><a href="#"><i class="bx bx-message"></i></a></li>
+                <li class="menuNav__list--item"><a href="#"><i class="bx bx-cog"></i></a></li>
             </ul>
         </nav>
-        <div>
-            <img src="" alt="foto-user">
-            <span>Nome user</span>
-            <span>@user</span>
+        <!-- Informações user -->
+        <div class="configuracoes__infoUser">
+            <img class="configuracoes__infoUser--fotoUser" src="" alt="foto-user">
+            <span class="configuracoes__infoUser--nomeUser">Nome user</span>
+            <span class="configuracoes__infoUser--id">@user</span>
         </div>
-        <div>
-            <h1>Novos Membros</h1>
-            <a href="#">Ver tudo</a>
+        <!-- Novos membros -->
+        <div class="configuracoes__novosMembros">
+            <h1 class="configuracoes__novosMembros--titulo">Novos Membros</h1>
+            <a class="configuracoes__novosMembros--verTudo" href="#">Ver tudo</a>
         </div>
-        <div>
-            <img src="" alt="logo-instagram">
-            <a href="#">@instagram-user</a>
+        <!-- instagram -->
+        <div class="configuracoes__instagram">
+            <img class="configuracoes__instagram--img" src="img/logo-insta.png" alt="logo-instagram">
+            <a class="configuracoes__instagram--link" href="#">@instagram-user</a>
         </div>
     </section>
 </body>
