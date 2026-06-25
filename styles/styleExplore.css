@@ -106,4 +106,9 @@ body {
     background: none;
     transform: translateY(0.2rem);
     cursor: pointer;
+    color: var(--corPadrao2);
+}
+
+.explore__rodape--button:hover {
+    color: var(--corPadrao);
 }
