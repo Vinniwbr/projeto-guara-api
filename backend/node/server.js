@@ -9,7 +9,9 @@ const http = require("http");
 const { inicializarSocket, notificarNovaMensagem } = require("./socket");
 const { gerarUrlLogin, buscarPerfilGoogle } = require("./googleLogin");
 const { loginOuCadastroGoogle, gerarToken, exigirLogin } = require("./authUsuarios");
-require("dotenv").config();
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
 
 const pool = require("./db");
 const { gerarUrlAutenticacao, criarOAuthClient } = require("./googleAuth");

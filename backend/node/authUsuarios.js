@@ -2,7 +2,6 @@
 // e gera/valida o token JWT usado pelo frontend.
 const jwt = require("jsonwebtoken");
 const pool = require("./db");
-require("dotenv").config();
 
 const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_EXPIRA_EM = "7d"; // token válido por 7 dias

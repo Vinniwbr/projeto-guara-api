@@ -2,7 +2,7 @@
 // Separado do googleAuth.js (que é usado para a Agenda/Calendar),
 // porque aqui só precisamos saber QUEM é a pessoa, não acessar a agenda dela.
 const { google } = require("googleapis");
-require("dotenv").config();
+
 
 // Escopos mínimos: só identidade (nome, e-mail, foto)
 const LOGIN_SCOPES = [

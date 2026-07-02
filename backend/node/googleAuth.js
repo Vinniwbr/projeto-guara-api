@@ -1,6 +1,6 @@
 // googleAuth.js — Configuração do cliente OAuth2 do Google Calendar
 const { google } = require("googleapis");
-require("dotenv").config();
+
 
 // Escopo: acesso completo à agenda (criar, editar, listar, deletar eventos)
 const SCOPES = [
