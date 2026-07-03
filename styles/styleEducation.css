@@ -1,3 +1,52 @@
-.oculto {
-    display: none !important;
+#aba-education {
+    display: none;
+    background-color: var(--corPrincipal1);
+}
+
+.cabecalho-education{
+    justify-content: space-between;
+    background-color: var(--corPrincipal2);
+    height: 6.2rem;
+    color: var(--corTituloPrincipal);
+}
+
+.about-colegio{
+    display: flex;
+    border: 2px;
+    border-color: var(--corExplore2);
+    border-radius: 2.5rem;
+}
+
+.mapa-colegio iframe{
+    padding: 20px;
+    border: 0;
+    align-items: center;
+}
+
+#services ul{
+    list-style: none;
+}
+
+#services li{
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    color: var(--corTituloPrincipal);
+}
+
+#services li ::before{
+    content: "▶";
+    position: absolute;
+    color: var(--corPrincipal4);
+    font-size: 0.8rem;
+    margin-right: 5px;
+}
+
+#infra h2{
+    color: var(--corTituloPrincipal);
+}
+
+.contato-education h3 {
+    color: var(--corTituloPrincipal);
 }
