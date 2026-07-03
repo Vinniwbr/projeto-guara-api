@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="styles/styleExplore.css">
     <link rel="stylesheet" href="styles/stylePrincipal.css">
     <link rel="stylesheet" href="styles/styleConfig.css">
+    <link rel="stylesheet" href="styles/styleEducation.css">
+    <link rel="stylesheet" href="styles/styleEmBreve.css">
+    <link rel="stylesheet" href="styles/styleSobreoprojeto.css">
+    <link rel="stylesheet" href="styles/styleStudentHubs.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <script src="iteracaoSite.js" defer></script>
     <title>Guará</title>
@@ -19,11 +23,11 @@
         <h1 class="explore__titulo">Explore</h1>
         <nav class="explore__menuNav">
             <ul class="explore__menuNav--list">
-                <li class="menuNav__list--item"><a href="#"><i></i>Home</a></li>
-                <li class="menuNav__list--item"><a href="#"><i></i>Em breve</a></li>
-                <li class="menuNav__list--item"><a href="#"><i></i>Education</a></li>
-                <li class="menuNav__list--item"><a href="#"><i></i>Science & Tech</a></li>
-                <li class="menuNav__list--item"><a href="#"><i></i>Student Hubs</a></li>
+                <li class="menuNav__list--item"><a href="#" data-aba="aba-home"><i></i>Home</a></li>
+                <li class="menuNav__list--item"><a href="#" data-aba="aba-em-breve"><i></i>Em breve</a></li>
+                <li class="menuNav__list--item"><a href="#" data-aba="aba-education"><i></i>Education</a></li>
+                <li class="menuNav__list--item"><a href="#" data-aba="aba-sobre-projeto"><i></i>Sobre o Projeto</a></li>
+                <li class="menuNav__list--item"><a href="#" data-aba="aba-student-hubs"><i></i>Student Hubs</a></li>
             </ul>
         </nav>
 
@@ -36,7 +40,7 @@
     </section>
 
     <!-- Aba Principal, chats -->
-    <main class="principal">
+    <main class="principal conteudo-painel" id="aba-home">
         <!-- cabeçalho -->
         <header class="principal__cabecalho">
             <img class="principal__cabecalho--imagemGuara" src="img/img-guara.png" alt="imagem-guara">
@@ -81,6 +85,85 @@
         </section>
     </main>
 
+    <!-- Aba Education -->
+    <section id="aba-education" class="conteudo-painel oculto">
+        <header>
+            <h1>Colégio Estadual Lindaura Ribeiro Lucas</h1>
+            <p>Inaugurado em 1991, o Colégio Lindaura marca gerações.</p>
+        </header>
+
+        <div id="about-colegio" class="section-colegio">
+            <h2>Sobre o Colégio</h2>
+            <div id="mapa-colegio"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3601.1047663688414!2d-49.17483812482592!3d-25.50155227751628!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94dcf0fa63f5dcdf%3A0xabffc9b368410955!2sLindaura%20R%20Lucas%2C%20C%20E%20Prof-Ef%20M!5e0!3m2!1spt-BR!2sbr!4v1783088369251!5m2!1spt-BR!2sbr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+            <p>O nosso Colégio está localizado no bairro Parque da Fonte, em São José dos Pinhais. </p>
+            </div>
+        </div>
+
+        <div id="services" class="section-colegio">
+            <h2 id="o-que-temos">O que temos?</h2>
+            <ul>
+                <li>Ensino Médio Técnico e Profissionalizante em:
+                    <ol>
+                        <li>Desenvolvimento de Sistemas</li>
+                        <li>Administração</li>
+                    </ol>
+                </li>
+                <li>Aulas nos turnos da manhã, tarde e noite</li>
+                <li>Ensino Fundamental II</li>
+                <li>EJA</li>
+            </ul>
+
+            <h2 id="infra">Infraestrutura</h2>
+            <p>O nosso colégio conta com uma biblioteca próxima a secretaria, um pátio, duas quadras poliesportivas e um saguão amplo para refeições.</p>
+        </div>
+
+        <footer>
+            <h3>Contato</h3>
+            <p>(41) 3282-0899</p>
+        </footer> 
+    </section>
+
+    <!--Em Breve-->
+    <section id="aba-em-breve" class="conteudo-painel oculto">
+        <main>
+            <h2>Novos projetos em breve!</h2>
+        </main>
+    </section>
+    
+    <!--Sobre o projeto (Antigo Science & Tech)-->
+    <section id="aba-sobre-projeto" class="conteudo-painel oculto">
+        <div id="como-surgiu">
+            <h2>Como esse projeto surgiu?</h2>
+            <p>O projeto surgiu...</p>
+        </div>
+
+        <div id="nome-projeto">
+            <h2>Por que tem esse nome?</h2>
+            <p>O projeto tem esse nome devido a...</p>
+        </div>
+    </section>
+
+    <!--Student Hubs-->
+    <section id="aba-student-hubs" class="conteudo-painel oculto">
+        <h2>Bem-vindo!</h2>
+        <p>Esse é nosso pequeno mural de orientações.</p>
+        <div id="prova-perdida">
+            <h4>O que fazer se eu perdi uma prova?</h4>
+            <p>Caso você tenha perdido uma prova, basta apresentar seu atestado ou justificativa na pedagogia.</p>
+            <span>O atestado deve ser apresentado o quanto antes.</span>
+        </div>
+        <div id="biblioteca">
+            <h4>Como fazer para emprestar um livro na biblioteca?</h4>
+            <p>Para emprestar um livro na biblioteca, você deve ter um cadastro.</p>
+            <span>O cadastro deve ser feito com nome, número de telefone seu e dos responsáveis e turma, diretamente na biblioteca.</span>
+        </div>
+        <div id="achados-perdidos">
+            <h4>Achados e Perdidos</h4>
+            <p>Esqueceu uma garrafa, caderno, blusa ou pertence na sala? Não se preocupe! Venha consultar nosso Achados e Perdidos.</p>
+            <span>O Achados e Perdidos geralmente é aberto na saída das aulas. Caso não encontre seu item, venha falar com algum de nossos funcionários.</span>
+        </div>
+    </section>
+
     <!-- Aba configurações do user -->
     <section class="configuracoes">
         <nav class="configuracoes__menuNav">
@@ -107,5 +190,6 @@
             <a class="configuracoes__instagram--link" href="#">@instagram-user</a>
         </div>
     </section>
+
 </body>
 </html>

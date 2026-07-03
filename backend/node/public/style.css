@@ -289,3 +289,7 @@ css.configuracoes {
 	color: var(--cor14);
 	word-break: break-word;
 }
+
+.oculto {
+	display: none !important;
+}

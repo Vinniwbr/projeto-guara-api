@@ -91,3 +91,7 @@
     font-size: 0.7rem;
     font-weight: bold;
 }
+
+.oculto {
+    display: none !important;
+}
