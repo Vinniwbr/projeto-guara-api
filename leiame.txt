@@ -1,0 +1,209 @@
+============================================================
+ PROJETO GUARÁ — LEIA-ME
+ Alterações feitas por: Vinni
+============================================================
+
+AVISO IMPORTANTE — LOGIN COM GOOGLE
+------------------------------------------------------------
+A API do Google (Calendar + Login) está rodando através do meu
+PROJETO PESSOAL(Vinni) no Google Cloud Console, em modo de
+TESTE (não publicado).
+
+Isso significa que, por enquanto, SÓ o e-mail abaixo consegue
+fazer login ou conectar a Agenda no sistema:
+
+  vinicius.weber.pr@gmail.com
+
+Se alguém da equipe precisar testar com outro e-mail Google,
+é necessário pedir que eu adicionar esse e-mail na lista
+de "usuários de teste" do projeto no Google Cloud Console.
+Sem isso, o Google bloqueia o login com a mensagem:
+"Access blocked: This app's request is invalid".
+
+(Futuramente, se o projeto for publicado oficialmente no Google
+Cloud, essa limitação deixa de existir e qualquer e-mail poderá
+ser usado normalmente.)
+
+
+============================================================
+ RESUMO DO QUE FOI FEITO
+============================================================
+
+O projeto foi recebido já com uma base de Chat funcionando
+(rotas de chats, mensagens e membros) e uma estrutura de banco
+de dados administrativa da escola setor, função, disciplinas,
+turmas, funcionários (tive que mexer em muitas coisas para poder terminar a implementação da api, como criar a tabela de usuarios no banco de dados, mudar algumas rotas no backend, enfim, reformular o projeto base, mas ja foi feito). A partir disso, foram adicionadas 4
+funcionalidades novas:
+
+  1) Integração com a Agenda do Google Calendar
+  2) Login social com conta Google (JWT)
+  3) Sistema de Turmas (estilo Google Classroom)
+  4) Chat em tempo real (Socket.IO)
+
+Detalhes de cada uma abaixo.
+
+
+------------------------------------------------------------
+1) AGENDA — GOOGLE CALENDAR
+------------------------------------------------------------
+O que faz:
+  Cada usuário pode conectar sua própria conta Google e, pelo
+  sistema, listar, criar e apagar eventos na agenda — incluindo
+  convidar participantes por e-mail (eles recebem convite real
+  do Google).
+
+Arquivos novos:
+  - googleAuth.js       → configura o OAuth2 da Agenda
+  - googleCalendar.js   → funções de ler/criar/apagar eventos
+
+Tabela nova no banco:
+  - google_tokens        → guarda o token de acesso de cada usuário
+
+Rotas novas:
+  GET    /auth/google?usuario_id=:id
+  GET    /auth/google/callback
+  GET    /usuarios/:id/google/status
+  GET    /usuarios/:id/eventos
+  POST   /usuarios/:id/eventos
+  DELETE /usuarios/:id/eventos/:eventoId
+
+
+------------------------------------------------------------
+2) LOGIN SOCIAL COM GOOGLE (JWT)
+------------------------------------------------------------
+O que faz:
+  Qualquer e-mail Google autorizado (ver aviso no topo) pode
+  fazer login no sistema. Se a pessoa nunca logou antes, uma
+  conta é criada automaticamente (nome, e-mail e foto vêm do
+  Google). Depois do login, o sistema entrega um token (JWT)
+  que comprova quem é a pessoa.
+
+Arquivos novos:
+  - googleLogin.js      → OAuth2 dedicado ao login (escopo simples,
+                           só pega nome/e-mail/foto, não toca a agenda)
+  - authUsuarios.js      → cria/reconhece usuário, gera o JWT, e tem
+                           o "porteiro" (middleware exigirLogin) que
+                           protege rotas que exigem login
+
+Colunas novas na tabela usuarios:
+  - google_id   → identifica a conta Google da pessoa
+  - papel       → 'aluno' ou 'professor' (definido manualmente
+                  no banco por um admin, não tem tela pra isso)
+
+Rotas novas:
+  GET /auth/login/google
+  GET /auth/login/google/callback
+  GET /usuarios/me   (retorna os dados de quem está logado)
+
+Observação técnica:
+  A rota /usuarios/me precisa estar declarada ANTES da rota
+  /usuarios/:id no server.js, senão o Express confunde "me"
+  com um ID e dá erro. Isso já foi corrigido, mas vale lembrar
+  caso novas rotas /usuarios/* sejam criadas no futuro.
+
+
+------------------------------------------------------------
+3) TURMAS (estilo Google Classroom)
+------------------------------------------------------------
+O que faz:
+  Professores criam turmas e recebem um código de convite único
+  (6 caracteres). Alunos usam esse código para entrar na turma.
+  Ao criar a turma, um chat é criado automaticamente e vinculado
+  a ela.
+
+  IMPORTANTE: isso NÃO usa o Google Classroom de verdade — as
+  turmas são só do nosso próprio banco. O Google é usado apenas
+  para login/identidade, não para importar turmas reais.
+
+Arquivo novo:
+  - turmas.js   → criar turma, gerar código, entrar com código,
+                  listar turmas e membros
+
+Tabelas/colunas novas:
+  - turma_membros          → liga usuário a turma + papel na turma
+  - turmas.codigo_convite  → código único de 6 caracteres
+  - turmas.criado_por      → quem (professor) criou a turma
+  - turmas.chat_id         → chat vinculado automaticamente
+
+Rotas novas:
+  POST /turmas                    (só professor pode criar)
+  POST /turmas/entrar             (aluno usa o código)
+  GET  /turmas?usuario_id=:id     (lista turmas do usuário)
+  GET  /turmas/:id/membros        (lista quem está na turma)
+
+
+------------------------------------------------------------
+4) CHAT EM TEMPO REAL (Socket.IO)
+------------------------------------------------------------
+O que faz:
+  O chat já existia (mensagens via REST), mas não era em tempo
+  real — precisava recarregar a página para ver mensagem nova.
+  Agora, quem está com o chat aberto recebe a mensagem na hora.
+
+  Como funciona: quando alguém manda mensagem, ela continua
+  sendo salva normalmente no banco (POST /chats/:id/mensagens);
+  depois disso, o servidor avisa via socket todo mundo que está
+  naquele mesmo chat, sem precisar atualizar a página.
+
+Arquivo novo:
+  - socket.js   → configura o Socket.IO, controla quem entra/sai
+                  de cada "sala" de chat, e avisa quando chega
+                  mensagem nova
+
+Arquivo de teste (não é parte do sistema final, é só pra testar):
+  - teste_chat_socket.html   → página simples com duas caixinhas
+                               de chat pra testar o tempo real
+
+Mudanças no server.js:
+  - servidor passou a usar http.createServer(app) em vez de só
+    app.listen(), porque o Socket.IO precisa "andar junto" com
+    o Express
+  - a rota de enviar mensagem agora também avisa o socket depois
+    de salvar no banco
+
+
+------------------------------------------------------------
+ARQUIVOS DE APOIO (instalação / organização)
+------------------------------------------------------------
+  - schema_completo.sql   → todas as tabelas do banco, em um
+                             arquivo só, na ordem certa (usar isso
+                             pra montar o banco do zero em qualquer
+                             máquina nova)
+  - SETUP.md               → passo a passo resumido de instalação
+  - .gitignore              → impede que a pasta node_modules suba
+                             pro GitHub (ela é gerada de novo com
+                             "npm install", não precisa subir)
+
+Observação sobre o .env:
+  Por decisão consciente, o .env REAL (com senhas e credenciais)
+  foi incluído no repositório do GitHub. Isso só é seguro porque
+  o repositório é PRIVADO e de uso interno da equipe. Se um dia
+  o repositório for tornado público, é obrigatório remover o .env
+  do histórico do Git e trocar todas as senhas/credenciais antes.
+
+
+============================================================
+ O QUE AINDA FALTA / PENDÊNCIAS CONHECIDAS
+============================================================
+
+  - Proteger todas as rotas (chat, agenda, turmas) com o JWT do
+    login. Hoje, qualquer um pode mandar usuario_id manualmente
+    em várias rotas — combinamos deixar essa proteção pro final,
+    depois de tudo funcionando, pra não travar o desenvolvimento
+    no meio do caminho.
+
+  - Chat em tempo real entre máquinas diferentes: ao testar em
+    outra máquina (depois de configurar tudo do zero), as
+    mensagens não estavam aparecendo em tempo real no teste.
+    Causa ainda não identificada — próximo passo é abrir o
+    Console do navegador (F12) durante o teste e procurar erros
+    relacionados a Socket.IO/CORS.
+
+  - Frontend ainda não usa os dados reais: o card "Agenda" no
+    site ainda mostra números fixos de exemplo ("xxxx
+    concluídas"), e ainda não existe tela de turmas nem botão
+    de "Entrar com Google" funcional.
+
+============================================================
+ FIM DO LEIA-ME
+============================================================

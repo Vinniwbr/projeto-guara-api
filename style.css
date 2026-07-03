@@ -1,194 +1,452 @@
 @charset "UTF-8";
-@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Henny+Penny&display=swap');
 
-:root {
-    --cor0: #FFFFFF;
-    --cor1: #c16a6195;
-    --cor2: #F09C6A;
-    --cor4: #EA444F;
-    --cor5: #EBB588;
-    --cor6: #f4dedb;
-    --cor7: #000000;
-    --cor8: #BB6D7B;
-    --cor9: #b86054bb;
-    --cor10: #BC757142;
-    --cor11: #6a3c35;
-    --cor12: #6a3c3595;
-    --cor13: #0d17a78c;
-    --cor14: #18a6de91;
-    --cor15: #0d17a7b2;
-    --cor16: #e6f6fc;
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&family=Henny+Penny&display=swap');
+
+:root{
+    --branco:#fff;
+    --rosa:#dba5a2;
+    --rosa-claro:#f7e7e5;
+    --rosa-escuro:#c97d79;
+    --texto:#5d4b4b;
+    --azul1:#74c7ee;
+    --azul2:#6f83df;
+    --sombra:0 10px 25px rgba(0,0,0,.15);
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    text-decoration: none;
-    list-style: none;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
 
-body {
-    display: flex;
-    min-height: 100vh;
-    font-family: "Comfortaa", Helvetica, sans-serif;
+body{
+    display:grid;
+    grid-template-columns:260px 1fr 320px;
+    min-height:100vh;
+    font-family:'Comfortaa',sans-serif;
+    background:var(--rosa-claro);
 }
 
-.explore {
+/*======================
+SIDEBAR ESQUERDA
+======================*/
+
+.explore{
+    background:var(--rosa);
+    color:white;
+    display:flex;
+    flex-direction:column;
+    padding:25px;
+}
+
+.explore__titulo{
+    font-size:30px;
+    margin-bottom:40px;
+}
+
+.explore__menuNav--list{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+}
+
+.menuNav__list--item{
+    list-style:none;
+}
+
+.menuNav__list--item a{
+    display:block;
+    color:white;
+    text-decoration:none;
+    padding:14px 16px;
+    border-radius:12px;
+    transition:.3s;
+}
+
+.menuNav__list--item a:hover{
+    background:rgba(255,255,255,.18);
+    transform:translateX(6px);
+}
+
+.explore__rodape{
+    margin-top:auto;
+    display:flex;
+    align-items:center;
+    gap:15px;
+    padding:15px;
+    background:rgba(0,0,0,.08);
+    border-radius:15px;
+}
+
+.explore__rodape--fotoUser{
+    width:45px;
+    height:45px;
+    border-radius:50%;
+    object-fit:cover;
+}
+
+.explore__rodape--nameUser{
+    flex:1;
+    font-size:.9rem;
+}
+
+.explore__rodape--button{
+    border:none;
+    background:none;
+    font-size:24px;
+    cursor:pointer;
+    color:white;
+}
+
+/*======================
+CENTRO
+======================*/
+
+.principal{
+    display:flex;
+    flex-direction:column;
+}
+
+.principal__cabecalho{
+    height:90px;
+    background:#f2d6d3;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:0 40px;
+}
+
+.principal__cabecalho--imagemGuara{
+    height:70px;
+}
+
+.principal__cabecalho--logoLindaura{
+    height:60px;
+}
+
+.principal__cabecalho--nomeProjeto{
+    font-family:"Henny Penny";
+    color:#b46771;
+    font-size:34px;
+}
+
+/*======================
+CARDS
+======================*/
+
+.principal__superior,
+.principal__inferior{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:40px;
+    padding:40px 60px 0;
+}
+
+.principal__superior a,
+.principal__inferior a{
+    text-decoration:none;
+    color:white;
+}
+
+.principal__superior--chatDirecao,
+.principal__superior--agenda,
+.principal__inferior--chatTurma,
+.principal__inferior--chatAmigavel{
+
+    background:linear-gradient(135deg,var(--azul1),var(--azul2));
+
+    border-radius:25px;
+
+    padding:30px;
+
+    min-height:190px;
+
+    display:flex;
+    flex-direction:column;
+
+    justify-content:space-between;
+
+    box-shadow:var(--sombra);
+
+    transition:.3s;
+}
+
+.principal__superior--chatDirecao:hover,
+.principal__superior--agenda:hover,
+.principal__inferior--chatTurma:hover,
+.principal__inferior--chatAmigavel:hover{
+
+    transform:translateY(-8px);
+
+}
+
+.superior__chatDirecao--titulo,
+.superior__agenda--titulo,
+.inferior__chatTurma--titulo,
+.inferior__chatAmigavel--titulo{
+
+    font-size:28px;
+    color:white;
+
+}
+
+.superior__chatDirecao--paragrafo,
+.superior__agenda--paragrafo,
+.inferior__chatTurma--paragrafo,
+.inferior__chatAmigavel--paragrafo{
+
+    color:#eef8ff;
+    font-size:.9rem;
+    line-height:1.5;
+
+}
+
+.superior__chatDirecao--usersOn,
+.superior__chatDirecao--members,
+.superior__agenda--atividadesConcluidas,
+.superior__agenda--atividadesEmEspera,
+.inferior__chatTurma--members,
+.inferior__chatAmigavel--members{
+
+    font-size:15px;
+    color:white;
+
+}
+
+/*======================
+LATERAL DIREITA
+======================*/
+
+.configuracoes{
+
+    background:#f7e7e5;
+
+    padding:25px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:30px;
+
+}
+
+.configuracoes__menuNav--list{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    gap:20px;
+
+    list-style:none;
+
+}
+
+.menuNavCon__list--item a{
+
+    color:#b46771;
+
+    font-size:24px;
+
+}
+
+.configuracoes__infoUser{
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    text-align:center;
+
+}
+
+.configuracoes__infoUser--fotoUser{
+
+    width:90px;
+
+    height:90px;
+
+    border-radius:50%;
+
+    background:#ddd;
+
+    object-fit:cover;
+
+    margin-bottom:15px;
+
+}
+
+.configuracoes__infoUser--nomeUser{
+
+    font-size:22px;
+
+    font-weight:bold;
+
+    color:#555;
+
+}
+
+.configuracoes__infoUser--id{
+
+    color:#888;
+
+    margin-top:5px;
+
+}
+
+.configuracoes__novosMembros h1{
+
+    font-size:30px;
+
+    color:#333;
+
+    margin-bottom:10px;
+
+}
+
+.configuracoes__novosMembros a{
+
+    color:#6f83df;
+
+    text-decoration:none;
+
+}
+
+.configuracoes__instagram{
+
+    margin-top:auto;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    gap:10px;
+
+}
+
+.configuracoes__instagram--img{
+
+    width:120px;
+
+}
+
+.configuracoes__instagram--link{
+
+    color:#5aa9ff;
+
+    text-decoration:none;
+
+}
+
+/*======================
+AGENDA — eventos dinâmicos
+======================*/
+
+.agenda__eventos-lista {
+    margin-top: 10px;
     display: flex;
     flex-direction: column;
-    width: 20%;
-    box-shadow: #64646f33 0.6rem 0rem 1.8rem 0rem;
-    min-height: 100vh;
-    color: var(--cor0);
-    background-color: var(--cor1);
-    cursor: default;
-    z-index: 1;
+    gap: 6px;
 }
 
-.explore__titulo {
-    font-size: 1.2rem;
-    margin: 1.2rem 0rem 0rem 0.8rem;
-}
-
-.explore__menuNav {
-    font-size: 0.9rem;
-    margin: 1.5rem 0rem 0rem 1rem;
-}
-
-.menuNav__list--item, .menuNav__list--item a { 
-    width: 12rem;
-    margin-top: 1.5rem;
-    padding: 0.6rem 0rem 0.6rem 0.3rem;
-    color: var(--cor0);
-    cursor: pointer;
-    transition: 0.15s;
-}
-
-.menuNav__list--item a:hover {
-    transition: 0.3s;
-    transform: translateY(-0.1rem);
-}
-
-.menuNav__list--item:hover {
-    background-color: var(--cor9);
-    border-radius: 0.2rem;
-    transition: 0.3s;
-    transform: translateY(-2px);
-}
-
-.explore__rodape {
+.agenda__eventos-item {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    padding: 6px 10px;
+    font-size: 12px;
+    color: #fff;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 0.6rem;
-    margin-top: auto;
-    height: 3.1rem;
-    background-color: var(--cor9);
+    gap: 8px;
+    transition: background 0.2s;
 }
 
-.explore__rodape--fotoUser {
-    height: 1.9rem;
-    width: 1.9rem;
-    border: 0.1rem solid var(--cor7);
-    border-radius: 3.1rem;
-    padding: 0.3rem;
-    margin-left: 0.6rem;
+.agenda__eventos-item:hover {
+    background: rgba(255, 255, 255, 0.25);
 }
 
-.explore__rodape--nameUser {
-    font-size: 0.7rem;
-    transform: translateY(0.1rem);
-    margin-right: 4.3rem;
-    color: var(--cor7);
+.agenda__eventos-horario {
+    font-weight: 600;
+    white-space: nowrap;
 }
 
-.explore__rodape--button {
-    border: none;
-    font-size: 1.1rem;
-    margin-right: 0.8rem;
-    background: none;
-    transform: translateY(0.2rem);
-    cursor: pointer;
+.agenda__eventos-titulo {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
-.principal {
-    width: 74%;
-    background-color: var(--cor6);
+.agenda__eventos-meet {
+    color: #fff;
+    font-size: 14px;
+    text-decoration: none;
 }
 
-.principal__cabecalho {
-    display: flex;
-    justify-content: space-between;
-    height: 6.2rem;
-    background-color: var(--cor10);
+.agenda__eventos-mais {
+    font-size: 11px;
+    color: #eef8ff;
+    text-align: center;
+    margin-top: 2px;
 }
 
-.principal__cabecalho--imagemGuara {
-    transform: scale(1.1);
-    margin-left: 1.2rem;
+/*======================
+RESPONSIVO
+======================*/
+
+@media(max-width:1200px){
+
+    body{
+
+        grid-template-columns:220px 1fr;
+
+    }
+
+    .configuracoes{
+
+        display:none;
+
+    }
+
 }
 
-.principal__cabecalho--nomeProjeto {
-    margin-top: 1.9rem;
-    font-size: 1.9rem;
-    color: var(--cor8);
-    transform: translateX(-1rem);
-    font-family: "Henny Penny", Helvetica, system-ui;
-}
+@media(max-width:850px){
 
-.principal__cabecalho--logoLindaura {
-    transform: scale(0.5);
-}
+    body{
 
-.principal__superior, .principal__inferior {
-    display: flex;
-    justify-content: center;
-    gap: 3.9rem;
-}
+        grid-template-columns:1fr;
 
-.principal__superior {
-    margin-top: 3.4rem;
-}
+    }
 
-.principal__inferior {
-    margin-top: 3rem;
-}
+    .explore{
 
-.principal__superior--chatDirecao, .principal__superior--agenda, .principal__inferior--chatTurma, .principal__inferior--chatAmigavel {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    padding: 1.2rem;
-    padding-top: 5.3rem;
-    width: 37%;
-    height: 12rem;
-    border-radius: 1.9rem;
-    box-shadow: rgba(0, 0, 0, 0.35) 0rem 0.3rem 0.9rem;
-    background-image: linear-gradient(65deg, var(--cor14) 68%, var(--cor13));
-    color: var(--cor15);
-    font-size: 0.9rem;
-    transition: transform 0.3s ease, background-image 3s ease;
-}
+        display:none;
 
-.principal__superior--chatDirecao:hover, .principal__superior--agenda:hover, .principal__inferior--chatTurma:hover, .principal__inferior--chatAmigavel:hover {
-    transform: scale(1.03);
-    background-image: linear-gradient(65deg, var(--cor14) 55%, var(--cor13));   
-}
+    }
 
-.superior__chatDirecao--titulo, .superior__agenda--titulo, .inferior__chatTurma--titulo, .inferior__chatAmigavel--titulo {
-    flex: 0 0 100%;
-    font-size: 1.2rem;
-    color: var(--cor15);
-} 
+    .principal__superior,
+    .principal__inferior{
 
-.superior__chatDirecao--paragrafo, .superior__agenda--paragrafo, .inferior__chatTurma--paragrafo, .inferior__chatAmigavel--paragrafo {
-    flex: 0 0 100%;
-    font-size: 0.7rem;
-    font-weight: bold;
-    color: var(--cor16);
-}
+        grid-template-columns:1fr;
+        padding:25px;
 
-.configuracoes {
-    display: 
+    }
+
+    .principal__cabecalho{
+
+        padding:20px;
+
+    }
+
+    .principal__cabecalho--nomeProjeto{
+
+        font-size:26px;
+
+    }
+
 }
