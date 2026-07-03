@@ -4,14 +4,36 @@
 
 const express = require("express");
 const cors    = require("cors");
+<<<<<<< HEAD
 require("dotenv").config();
 
 const pool = require("./db");
 const app  = express();
+=======
+const turmasService = require("./turmas");
+const http = require("http");
+const { inicializarSocket, notificarNovaMensagem } = require("./socket");
+const { gerarUrlLogin, buscarPerfilGoogle } = require("./googleLogin");
+const { loginOuCadastroGoogle, gerarToken, exigirLogin } = require("./authUsuarios");
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
+
+const pool = require("./db");
+const { gerarUrlAutenticacao, criarOAuthClient } = require("./googleAuth");
+const googleCalendar = require("./googleCalendar");
+const app  = express();
+const servidorHttp = http.createServer(app);
+const io = inicializarSocket(servidorHttp);
+>>>>>>> 7bfefb1350720da835f546c572ae7b03d89b18ab
 const PORT = process.env.PORT || 3000;
 
 // ─── Middlewares ─────────────────────────────────────────────
 
+<<<<<<< HEAD
+=======
+app.use(express.static("public"));
+>>>>>>> 7bfefb1350720da835f546c572ae7b03d89b18ab
 app.use(cors());           // Permite requisições do frontend
 app.use(express.json());   // Parseia body JSON
 
@@ -26,6 +48,26 @@ function erroServidor(res, err, msg = "Erro interno do servidor") {
 // ROTAS — USUÁRIOS
 // ============================================================
 
+<<<<<<< HEAD
+=======
+// GET /usuarios/me — retorna os dados do usuário logado (a partir do JWT)
+// Útil pro frontend confirmar quem está logado e popular o nome/foto na UI.
+app.get("/usuarios/me", exigirLogin, async (req, res) => {
+  try {
+    const resultado = await pool.query(
+      "SELECT id, nome, username, email, foto_url FROM usuarios WHERE id = $1",
+      [req.usuario.usuarioId]
+    );
+    if (resultado.rows.length === 0) {
+      return res.status(404).json({ erro: "Usuário não encontrado." });
+    }
+    res.json(resultado.rows[0]);
+  } catch (err) {
+    erroServidor(res, err, "Erro ao buscar usuário logado");
+  }
+});
+
+>>>>>>> 7bfefb1350720da835f546c572ae7b03d89b18ab
 // POST /usuarios — Cria um novo usuário
 app.post("/usuarios", async (req, res) => {
   const { nome, username, email, foto_url } = req.body;
@@ -179,7 +221,14 @@ app.post("/chats/:id/mensagens", async (req, res) => {
       WHERE m.id = $1
     `, [nova.rows[0].id]);
 
+<<<<<<< HEAD
     res.status(201).json(completa.rows[0]);
+=======
+   // 🔌 Notifica em tempo real quem estiver na sala desse chat
+   notificarNovaMensagem(req.params.id, completa.rows[0]);
+
+   res.status(201).json(completa.rows[0]);
+>>>>>>> 7bfefb1350720da835f546c572ae7b03d89b18ab
   } catch (err) {
     erroServidor(res, err, "Erro ao enviar mensagem");
   }
@@ -237,6 +286,210 @@ app.delete("/chats/:id/membros/:usuario_id", async (req, res) => {
   }
 });
 
+<<<<<<< HEAD
+=======
+// ============================================================
+// ROTAS — TURMAS
+// Cole este bloco no server.js.
+// Require necessário no topo:
+//   const turmasService = require("./turmas");
+//
+// IMPORTANTE: por enquanto (fase de desenvolvimento), estas rotas
+// recebem "usuario_id" diretamente no corpo da requisição, sem JWT
+// ainda — exatamente como o resto do projeto está hoje. Na etapa
+// final, quando protegermos tudo com login, vamos trocar
+// "usuario_id" do body pelo usuário vindo do token (req.usuario.usuarioId).
+// ============================================================
+
+// POST /turmas — cria uma turma nova (somente professor)
+// Body: { usuario_id, nome_turma }
+app.post("/turmas", async (req, res) => {
+  const { usuario_id, nome_turma } = req.body;
+  if (!usuario_id || !nome_turma) {
+    return res.status(400).json({ erro: "usuario_id e nome_turma são obrigatórios." });
+  }
+  try {
+    const turma = await turmasService.criarTurma(usuario_id, nome_turma);
+    res.status(201).json(turma);
+  } catch (err) {
+    if (err.message === "APENAS_PROFESSOR_PODE_CRIAR_TURMA") {
+      return res.status(403).json({ erro: "Apenas professores podem criar turmas." });
+    }
+    erroServidor(res, err, "Erro ao criar turma");
+  }
+});
+
+// POST /turmas/entrar — aluno entra numa turma usando o código de convite
+// Body: { usuario_id, codigo }
+app.post("/turmas/entrar", async (req, res) => {
+  const { usuario_id, codigo } = req.body;
+  if (!usuario_id || !codigo) {
+    return res.status(400).json({ erro: "usuario_id e codigo são obrigatórios." });
+  }
+  try {
+    const turma = await turmasService.entrarNaTurma(usuario_id, codigo);
+    res.status(200).json(turma);
+  } catch (err) {
+    if (err.message === "CODIGO_INVALIDO") {
+      return res.status(404).json({ erro: "Código de convite inválido." });
+    }
+    erroServidor(res, err, "Erro ao entrar na turma");
+  }
+});
+
+// GET /turmas?usuario_id=123 — lista as turmas do usuário (como professor ou aluno)
+app.get("/turmas", async (req, res) => {
+  const { usuario_id } = req.query;
+  if (!usuario_id) {
+    return res.status(400).json({ erro: "usuario_id é obrigatório na query string." });
+  }
+  try {
+    const turmas = await turmasService.listarTurmasDoUsuario(usuario_id);
+    res.json(turmas);
+  } catch (err) {
+    erroServidor(res, err, "Erro ao listar turmas");
+  }
+});
+
+// GET /turmas/:id/membros — lista os membros de uma turma
+app.get("/turmas/:id/membros", async (req, res) => {
+  try {
+    const membros = await turmasService.listarMembrosDaTurma(req.params.id);
+    res.json(membros);
+  } catch (err) {
+    erroServidor(res, err, "Erro ao listar membros da turma");
+  }
+});
+
+
+
+
+// ============================================================
+// ROTAS — GOOGLE CALENDAR (Agenda)
+// ============================================================
+
+// GET /auth/google?usuario_id=123 — gera o link de autorização do Google
+app.get("/auth/google", (req, res) => {
+  const { usuario_id } = req.query;
+  if (!usuario_id) {
+    return res.status(400).json({ erro: "usuario_id é obrigatório na query string." });
+  }
+  const url = gerarUrlAutenticacao(usuario_id);
+  res.redirect(url);
+});
+
+// GET /auth/google/callback — o Google chama essa rota depois do consentimento
+app.get("/auth/google/callback", async (req, res) => {
+  const { code, state, error } = req.query;
+  const usuarioId = state;
+
+  if (error) {
+    // Usuário cancelou ou negou a permissão
+    return res.redirect(`/agenda-erro.html?motivo=${encodeURIComponent(error)}`);
+  }
+
+  try {
+    const oauth2Client = criarOAuthClient();
+    const { tokens } = await oauth2Client.getToken(code);
+
+    await googleCalendar.salvarTokens(usuarioId, tokens);
+
+    // Redireciona de volta pro front (ajuste a URL conforme seu frontend)
+    res.redirect("/agenda-conectada.html");
+  } catch (err) {
+    erroServidor(res, err, "Erro ao concluir autenticação com Google");
+  }
+});
+
+// GET /usuarios/:id/google/status — verifica se o usuário já conectou a conta Google
+app.get("/usuarios/:id/google/status", async (req, res) => {
+  try {
+    const tokens = await googleCalendar.buscarTokens(req.params.id);
+    res.json({ conectado: !!tokens });
+  } catch (err) {
+    erroServidor(res, err, "Erro ao verificar status do Google");
+  }
+});
+
+// GET /usuarios/:id/eventos — lista os próximos eventos da agenda do usuário
+app.get("/usuarios/:id/eventos", async (req, res) => {
+  try {
+    const eventos = await googleCalendar.listarEventos(req.params.id);
+    res.json(eventos);
+  } catch (err) {
+    if (err.message === "USUARIO_SEM_GOOGLE_CONECTADO") {
+      return res.status(403).json({ erro: "Usuário ainda não conectou a conta Google.", precisaConectar: true });
+    }
+    erroServidor(res, err, "Erro ao listar eventos");
+  }
+});
+
+// POST /usuarios/:id/eventos — cria um novo evento na agenda do usuário
+// Body esperado: { titulo, descricao, inicio, fim, local, participantes: ["email1@x.com", "email2@x.com"] }
+app.post("/usuarios/:id/eventos", async (req, res) => {
+  const { titulo, inicio, fim } = req.body;
+
+  if (!titulo || !inicio || !fim) {
+    return res.status(400).json({ erro: "titulo, inicio e fim são obrigatórios." });
+  }
+
+  try {
+    const evento = await googleCalendar.criarEvento(req.params.id, req.body);
+    res.status(201).json(evento);
+  } catch (err) {
+    if (err.message === "USUARIO_SEM_GOOGLE_CONECTADO") {
+      return res.status(403).json({ erro: "Usuário ainda não conectou a conta Google.", precisaConectar: true });
+    }
+    erroServidor(res, err, "Erro ao criar evento");
+  }
+});
+
+// DELETE /usuarios/:id/eventos/:eventoId — apaga um evento
+app.delete("/usuarios/:id/eventos/:eventoId", async (req, res) => {
+  try {
+    await googleCalendar.apagarEvento(req.params.id, req.params.eventoId);
+    res.json({ mensagem: "Evento apagado com sucesso." });
+  } catch (err) {
+    if (err.message === "USUARIO_SEM_GOOGLE_CONECTADO") {
+      return res.status(403).json({ erro: "Usuário ainda não conectou a conta Google.", precisaConectar: true });
+    }
+    erroServidor(res, err, "Erro ao apagar evento");
+  }
+});
+
+// ============================================================
+// ROTAS — LOGIN COM GOOGLE
+// ============================================================
+ 
+// GET /auth/login/google — inicia o login social
+app.get("/auth/login/google", (req, res) => {
+  const url = gerarUrlLogin();
+  res.redirect(url);
+});
+ 
+// GET /auth/login/google/callback — recebe o code, cria/reconhece o usuário, gera o JWT
+app.get("/auth/login/google/callback", async (req, res) => {
+  const { code, error } = req.query;
+ 
+  if (error) {
+    return res.redirect(`/login-erro.html?motivo=${encodeURIComponent(error)}`);
+  }
+ 
+  try {
+    const perfilGoogle = await buscarPerfilGoogle(code);
+    const usuario = await loginOuCadastroGoogle(perfilGoogle);
+    const token = gerarToken(usuario);
+ 
+    // Envia o token pro frontend via query string do redirecionamento.
+    // O frontend (main.js) deve ler esse parâmetro e salvar localmente.
+    res.redirect(`/index.html?token=${token}`);
+  } catch (err) {
+    erroServidor(res, err, "Erro ao concluir login com Google");
+  }
+});
+ 
+
+>>>>>>> 7bfefb1350720da835f546c572ae7b03d89b18ab
 // ─── Rota raiz — painel de status ────────────────────────────
 app.get("/", (req, res) => {
   res.send(`
@@ -275,6 +528,13 @@ app.get("/", (req, res) => {
 app.get("/health", (req, res) => res.json({ status: "ok" }));
 
 // ─── Start ───────────────────────────────────────────────────
+<<<<<<< HEAD
 app.listen(PORT, () => {
   console.log(`🚀 Servidor Guará rodando em http://localhost:${PORT}`);
 });
+=======
+servidorHttp.listen(PORT, () => {
+    console.log(`🚀 Servidor Guará rodando em http://localhost:${PORT}`);
+    console.log(`🔌 Socket.IO pronto para conexões em tempo real`);
+   });
+>>>>>>> 7bfefb1350720da835f546c572ae7b03d89b18ab

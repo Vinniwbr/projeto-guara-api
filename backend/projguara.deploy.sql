@@ -50,3 +50,35 @@ CREATE TABLE vinculo_escola (
     CONSTRAINT fk_vinculo_turma FOREIGN KEY (id_turma)       REFERENCES turmas(id_turma)             ON DELETE CASCADE,
     CONSTRAINT uq_vinculo       UNIQUE (id_funcionario, id_disciplina, id_turma)
 );
+<<<<<<< HEAD
+=======
+
+-- migracao_turmas.sql
+-- Adiciona papel (professor/aluno) e estrutura de vínculo de turmas
+ 
+-- 1) Papel do usuário — definido manualmente pelo admin no banco.
+--    Por padrão todo novo cadastro entra como 'aluno'; o admin promove
+ALTER TABLE usuarios
+  ADD COLUMN IF NOT EXISTS papel VARCHAR(20) NOT NULL DEFAULT 'aluno'
+  CHECK (papel IN ('aluno', 'professor'));
+ 
+-- 2) Código de convite único por turma (a tabela "turmas" já existe).
+ALTER TABLE turmas
+  ADD COLUMN IF NOT EXISTS codigo_convite VARCHAR(10) UNIQUE,
+  ADD COLUMN IF NOT EXISTS criado_por INT REFERENCES usuarios(id),
+  ADD COLUMN IF NOT EXISTS chat_id INT REFERENCES chats(id);
+ 
+-- 3) Vínculo usuário <-> turma (quem está em qual turma, e com que papel
+--    DENTRO daquela turma — útil se um professor também quiser entrar
+--    como membro comum em outra turma, por exemplo).
+CREATE TABLE IF NOT EXISTS turma_membros (
+    id_turma    INT NOT NULL REFERENCES turmas(id_turma) ON DELETE CASCADE,
+    usuario_id  INT NOT NULL REFERENCES usuarios(id)      ON DELETE CASCADE,
+    papel       VARCHAR(20) NOT NULL DEFAULT 'aluno' CHECK (papel IN ('aluno', 'professor')),
+    entrou_em   TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id_turma, usuario_id)
+);
+ 
+-- ─── Exemplo: promover um usuário a professor manualmente ────
+-- UPDATE usuarios SET papel = 'professor' WHERE email = 'professor@escola.com';
+>>>>>>> 7bfefb1350720da835f546c572ae7b03d89b18ab

@@ -38,10 +38,53 @@
     border-radius: 3.1rem;
 }
 
-.configuracoes__infoUser--id {
+.configuracoes__infoUser--nomeUser {
+    margin-top: 0.5rem;
     font-size: 0.9rem;
 }
 
+.configuracoes__infoUser--id {
+    font-size: 0.7rem;
+}
+
 .configuracoes__colegas {
+    display: flex;
+    justify-content: space-between;
     height: 15rem;
+    background-color: var(--corExplore2);
+    padding: 0.5rem;
+}
+
+.configuracoes__colegas--titulo {
+    font-size: 1rem;
+    color: var(--corPrincipal1);
+    margin-top: 0.6rem;
+}
+
+.configuracoes__colegas--verTudo { 
+    display: flex; 
+    align-items: center;
+    color: var(--corPadrao2);
+    background-color: var(--corPrincipal1);
+    border-radius: 1rem;
+    font-size: 0.8rem;
+    height: 1.7rem;
+    width: auto;
+    padding: 0 0.2rem 0 0.2rem;
+    margin-top: 0.3rem;
+}
+
+.configuracoes__colegas--verTudo:hover {
+    background-color: var(--corConfig1);
+    color: var(--corPrincipal1);
+}
+
+.configuracoes__instagram {
+    height: 3rem;
+    border: 2px solid black;
+}
+
+.configuracoes__instagram--img {
+    height: 2rem;
+    width: auto;
 }
