@@ -463,7 +463,7 @@ app.get("/auth/login/google/callback", async (req, res) => {
  
     // Envia o token pro frontend via query string do redirecionamento.
     // O frontend (main.js) deve ler esse parâmetro e salvar localmente.
-    res.redirect(`/login-sucesso.html?token=${token}`);
+    res.redirect(`/index.html?token=${token}`);
   } catch (err) {
     erroServidor(res, err, "Erro ao concluir login com Google");
   }
