@@ -33,6 +33,15 @@
     height: 6rem;
     width: 6rem;
     padding: 0.5rem;
+    margin-top: 3rem;
     border: 0.1rem solid var(--corPadrao2);
     border-radius: 3.1rem;
+}
+
+.configuracoes__infoUser--id {
+    font-size: 0.9rem;
+}
+
+.configuracoes__colegas {
+    height: 15rem;
 }
