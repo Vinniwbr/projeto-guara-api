@@ -1,7 +1,6 @@
 // ============================================================
 // agenda.js — Projeto Guará
 // Calendário integrado com Google Calendar API
-// Funcionalidades: visualizar, criar, editar e deletar eventos
 // ============================================================
 
 const API_URL = window.location.hostname === "localhost"
@@ -41,8 +40,10 @@ function formatarDataHora(dataISO) {
 function toInputDatetime(dataISO) {
   if (!dataISO) return "";
   const d = new Date(dataISO);
-  // Formato esperado pelo input datetime-local: YYYY-MM-DDTHH:MM
-  return d.toISOString().slice(0, 16);
+  // Ajusta para o fuso horário local antes de formatar
+  const offset = d.getTimezoneOffset() * 60000; // offset em ms
+  const local = new Date(d.getTime() - offset);
+  return local.toISOString().slice(0, 16);
 }
 
 // ═══════════════════════════════════════════════════════════════

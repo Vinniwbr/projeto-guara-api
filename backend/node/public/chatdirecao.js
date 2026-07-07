@@ -1,7 +1,7 @@
 // ============================================================
 // chatdirecao.js — Projeto Guará
 // Chat Direção com Socket.IO em tempo real
-// Token recebido via URL (?token=...) ou localStorage
+// Token recebido via URL (?token=...)
 // ============================================================
 
 const API_URL = window.location.hostname === "localhost"
