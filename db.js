@@ -1,21 +1,21 @@
-// db.js — Pool de conexão com o PostgreSQL
-const { Pool } = require("pg");
-require("dotenv").config();
+# ─── Banco de dados PostgreSQL ───────────────────────────────
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=guara_db
+DB_USER=postgres
+DB_PASSWORD= #Apague esse comentario e coloque a senha local do banco de dados aqui
 
-const pool = new Pool({
-  host:     process.env.DB_HOST,
-  port:     process.env.DB_PORT,
-  database: process.env.DB_NAME,
-  user:     process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-});
+# ─── Servidor ────────────────────────────────────────────────
+PORT=3000
 
-pool.on("connect", () => {
-  console.log("✅ Conectado ao PostgreSQL");
-});
+GOOGLE_CLIENT_ID=368924356347-cu0k0oq2jvqou1lonpll3pha4css3ngs.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=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
+GOOGLE_REDIRECT_URI=http://localhost:3000/auth/google/callback
 
-pool.on("error", (err) => {
-  console.error("❌ Erro no pool do PostgreSQL:", err.message);
-});
+# Redirect URI dedicado ao LOGIN
+GOOGLE_LOGIN_REDIRECT_URI=http://localhost:3000/auth/login/google/callback
+ 
+# Chave secreta usada para assinar os tokens JWT.
+JWT_SECRET=9ad7cebc62deca9db57f8f50b7e51a9eb12513f3f58f9adfc12cf301173a8333
 
-module.exports = pool;
+
