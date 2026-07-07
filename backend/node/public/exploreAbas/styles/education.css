@@ -1,0 +1,55 @@
+body{
+    margin: 0;
+    padding: 0;
+}
+
+.education {
+    margin-left: 20%;
+    background-color: var(--corPrincipal1);
+}
+
+.education__cabecalho {
+    display: flex;
+    height: 9.5rem;
+    background-color: var(--corPrincipal2);
+    width: 100vw;
+}
+.education__cabecalho--titulo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-right: 3.5rem;
+    font-size: 1.9rem;
+}
+
+.education__cabecalho--paragrafo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--corTituloPrincipal);
+}
+
+.education__sobreColegio {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.education__sobreColegio--titulo {
+    height: 1.2rem;
+    color: var(--corTituloPrincipal);
+}
+
+.education__maisSobre {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 60px;
+}
+.education__maisSobre--list-item::before {
+    content: "➜";
+}
+
+.education__maisSobre--infra{
+    display: flex;
+    justify-content: left;
+}
