@@ -311,23 +311,55 @@ function atualizarCardsChat(chats) {
 }
 
 function vincularCardsChat() {
-  const seletorParaTipo = {
-    ".principal__superior--chatDirecao": "direcao",
-    ".principal__inferior--chatTurma":   "turma",
-    ".principal__inferior--chatAmigavel":"amigavel",
-  };
-  Object.entries(seletorParaTipo).forEach(([seletor, tipo]) => {
-    const card = document.querySelector(seletor);
-    if (!card) return;
-    const chat = chatsCache.find((c) => c.tipo === tipo);
-    if (!chat) return;
-    card.style.cursor = "pointer";
-    card.setAttribute("tabindex", "0");
-    card.setAttribute("role", "button");
-    card.setAttribute("aria-label", `Abrir ${chat.nome}`);
-    card.onclick  = (e) => { e.preventDefault(); abrirChat(chat); };
-    card.onkeydown = (e) => { if (e.key === "Enter" || e.key === " ") abrirChat(chat); };
-  });
+  const chats = chatsCache;
+ 
+  // Chat Direção → redireciona para página separada com token
+  const cardDirecao = document.querySelector(".principal__superior--chatDirecao");
+  const chatDirecao = chats.find((c) => c.tipo === "direcao");
+  if (cardDirecao && chatDirecao) {
+    cardDirecao.style.cursor = "pointer";
+    cardDirecao.setAttribute("tabindex", "0");
+    cardDirecao.setAttribute("role", "button");
+    cardDirecao.setAttribute("aria-label", `Abrir ${chatDirecao.nome}`);
+    cardDirecao.onclick = (e) => {
+      e.preventDefault();
+      if (!token) {
+        alert("Faça login para acessar o chat.");
+        return;
+      }
+      window.location.href = `chatdirecao.html?token=${token}`;
+    };
+    cardDirecao.onkeydown = (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        if (!token) { alert("Faça login para acessar o chat."); return; }
+        window.location.href = `chatdirecao.html?token=${token}`;
+      }
+    };
+  }
+ 
+  // Chat Turma → modal (mantém comportamento atual)
+  const cardTurma = document.querySelector(".principal__inferior--chatTurma");
+  const chatTurma = chats.find((c) => c.tipo === "turma");
+  if (cardTurma && chatTurma) {
+    cardTurma.style.cursor = "pointer";
+    cardTurma.setAttribute("tabindex", "0");
+    cardTurma.setAttribute("role", "button");
+    cardTurma.setAttribute("aria-label", `Abrir ${chatTurma.nome}`);
+    cardTurma.onclick  = (e) => { e.preventDefault(); abrirChat(chatTurma); };
+    cardTurma.onkeydown = (e) => { if (e.key === "Enter" || e.key === " ") abrirChat(chatTurma); };
+  }
+ 
+  // Chat Amigável → modal (mantém comportamento atual)
+  const cardAmigavel = document.querySelector(".principal__inferior--chatAmigavel");
+  const chatAmigavel = chats.find((c) => c.tipo === "amigavel");
+  if (cardAmigavel && chatAmigavel) {
+    cardAmigavel.style.cursor = "pointer";
+    cardAmigavel.setAttribute("tabindex", "0");
+    cardAmigavel.setAttribute("role", "button");
+    cardAmigavel.setAttribute("aria-label", `Abrir ${chatAmigavel.nome}`);
+    cardAmigavel.onclick  = (e) => { e.preventDefault(); abrirChat(chatAmigavel); };
+    cardAmigavel.onkeydown = (e) => { if (e.key === "Enter" || e.key === " ") abrirChat(chatAmigavel); };
+  }
 }
 
 // ═══════════════════════════════════════════════════════════════
