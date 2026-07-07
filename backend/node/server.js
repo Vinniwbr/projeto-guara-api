@@ -4,6 +4,12 @@
 
 const express = require("express");
 const cors    = require("cors");
+<<<<<<< HEAD
+require("dotenv").config();
+
+const pool = require("./db");
+const app  = express();
+=======
 const turmasService = require("./turmas");
 const http = require("http");
 const { inicializarSocket, notificarNovaMensagem } = require("./socket");
@@ -19,11 +25,15 @@ const googleCalendar = require("./googleCalendar");
 const app  = express();
 const servidorHttp = http.createServer(app);
 const io = inicializarSocket(servidorHttp);
+>>>>>>> 7bfefb1350720da835f546c572ae7b03d89b18ab
 const PORT = process.env.PORT || 3000;
 
 // ─── Middlewares ─────────────────────────────────────────────
 
+<<<<<<< HEAD
+=======
 app.use(express.static("public"));
+>>>>>>> 7bfefb1350720da835f546c572ae7b03d89b18ab
 app.use(cors());           // Permite requisições do frontend
 app.use(express.json());   // Parseia body JSON
 
@@ -38,6 +48,8 @@ function erroServidor(res, err, msg = "Erro interno do servidor") {
 // ROTAS — USUÁRIOS
 // ============================================================
 
+<<<<<<< HEAD
+=======
 // GET /usuarios/me — retorna os dados do usuário logado (a partir do JWT)
 // Útil pro frontend confirmar quem está logado e popular o nome/foto na UI.
 app.get("/usuarios/me", exigirLogin, async (req, res) => {
@@ -55,6 +67,7 @@ app.get("/usuarios/me", exigirLogin, async (req, res) => {
   }
 });
 
+>>>>>>> 7bfefb1350720da835f546c572ae7b03d89b18ab
 // POST /usuarios — Cria um novo usuário
 app.post("/usuarios", async (req, res) => {
   const { nome, username, email, foto_url } = req.body;
@@ -208,10 +221,14 @@ app.post("/chats/:id/mensagens", async (req, res) => {
       WHERE m.id = $1
     `, [nova.rows[0].id]);
 
+<<<<<<< HEAD
+    res.status(201).json(completa.rows[0]);
+=======
    // 🔌 Notifica em tempo real quem estiver na sala desse chat
    notificarNovaMensagem(req.params.id, completa.rows[0]);
 
    res.status(201).json(completa.rows[0]);
+>>>>>>> 7bfefb1350720da835f546c572ae7b03d89b18ab
   } catch (err) {
     erroServidor(res, err, "Erro ao enviar mensagem");
   }
@@ -269,6 +286,8 @@ app.delete("/chats/:id/membros/:usuario_id", async (req, res) => {
   }
 });
 
+<<<<<<< HEAD
+=======
 // ============================================================
 // ROTAS — TURMAS
 // Cole este bloco no server.js.
@@ -470,6 +489,7 @@ app.get("/auth/login/google/callback", async (req, res) => {
 });
  
 
+>>>>>>> 7bfefb1350720da835f546c572ae7b03d89b18ab
 // ─── Rota raiz — painel de status ────────────────────────────
 app.get("/", (req, res) => {
   res.send(`
@@ -508,7 +528,13 @@ app.get("/", (req, res) => {
 app.get("/health", (req, res) => res.json({ status: "ok" }));
 
 // ─── Start ───────────────────────────────────────────────────
+<<<<<<< HEAD
+app.listen(PORT, () => {
+  console.log(`🚀 Servidor Guará rodando em http://localhost:${PORT}`);
+});
+=======
 servidorHttp.listen(PORT, () => {
     console.log(`🚀 Servidor Guará rodando em http://localhost:${PORT}`);
     console.log(`🔌 Socket.IO pronto para conexões em tempo real`);
    });
+>>>>>>> 7bfefb1350720da835f546c572ae7b03d89b18ab
