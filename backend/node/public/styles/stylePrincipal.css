@@ -1,5 +1,6 @@
 .principal {
     width: 100%;
+    margin-left: 20%;
     background-color: var(--corPrincipal1);
 }
 
@@ -90,4 +91,8 @@
     flex: 0 0 100%;
     font-size: 0.7rem;
     font-weight: bold;
+}
+
+.oculto {
+    display: none !important;
 }

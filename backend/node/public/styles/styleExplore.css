@@ -14,7 +14,7 @@
     --corPrincipal3: #18a6de91;
     --corPrincipal5: #0d17a7b2;
     --corchat1: #c16b61ea;
-    --corConfig1: #7b443eb8;
+    --corGuara: #e32636;
 }
 
 * {
@@ -41,6 +41,7 @@ body {
     background-color: var(--corExplore1);
     cursor: default;
     z-index: 1;
+    position: fixed;
 }
 
 .explore__titulo {
@@ -53,24 +54,24 @@ body {
     margin: 1.5rem 0rem 0rem 1rem;
 }
 
-.menuNav__list--item, .menuNav__list--item a { 
-    width: 12rem;
+.menuNav__list--item {
+    width: 13rem;
     margin-top: 1.5rem;
+}
+
+.menuNav__list--item a { 
+    display: flex;
+    width: 100%;
+    height: 100%;
     padding: 0.6rem 0rem 0.6rem 0.3rem;
     color: var(--corPadrao);
     cursor: pointer;
-    transition: 0.15s;
+    transition: 0.3s;
 }
 
 .menuNav__list--item a:hover {
-    transition: 0.3s;
-    transform: translateY(-0.1rem);
-}
-
-.menuNav__list--item:hover {
     background-color: var(--corExplore2);
     border-radius: 0.2rem;
-    transition: 0.3s;
     transform: translateY(-2px);
 }
 
